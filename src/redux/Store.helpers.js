@@ -6,8 +6,13 @@ export const saveState = (state) => {
     try {
       const messagesStr = JSON.stringify(state.chat.messages);
       const user = JSON.stringify(state.chat.user);
+      
       localStorage.setItem(MESSAGES, messagesStr);
       sessionStorage.setItem(USER, user);
+
+      
+      console.log("set storeage called", state.chat.messages);
+      
     } catch (err) {
       console.log(
         "Redux was not able to persist the state into the localstorage"

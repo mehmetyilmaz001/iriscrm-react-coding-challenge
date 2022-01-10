@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { throttle } from "lodash";
 import ChatReducer from "./reducers/ChatReducer";
 import { saveState} from './Store.helpers'
 
@@ -23,10 +22,15 @@ const store = configureStore({
 
 // handle state update event. Whenever the state will change, 
 //this subscriber will call the saveState methode to update and persist the state into the store
+// store.subscribe(
+//   throttle(() => {
+//     saveState(store.getState());
+//   }, 1000)
+// );
 store.subscribe(
-  throttle(() => {
+  () => {
     saveState(store.getState());
-  }, 1000)
+  }
 );
 
 export default store;

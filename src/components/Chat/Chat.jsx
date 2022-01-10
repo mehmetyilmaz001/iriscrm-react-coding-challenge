@@ -5,14 +5,18 @@ import ChatAppBar from "./components/ChatAppBar";
 import NewMessage from "./components/NewMessage";
 import ChatBuble from "./components/ChatBuble/ChatBuble";
 import SigninModal from "./components/SigninModal";
+import { v4 as uuidv4 } from 'uuid';
 
-import { setUser, setMessages, setMessagesFromClients } from '../../redux/reducers/ChatReducer';
+
+import { setUser, setMessages } from '../../redux/reducers/ChatReducer';
 import {MESSAGES } from '../../Constants';
+import useLocalStorage from "../../hooks/useStorage";
 
 const Chat = () => {
   const dispatch = useDispatch();
-  const { user, messages, messagesFromClients } = useSelector(s => s.chat)
+  const { user, messages } = useSelector(s => s.chat)
 
+  const [ _messages, _setMessages ] = useState(messages);
   const [containerHasOverflow, setContainerHasOverflow] = useState(false);
   const [signInVisible, setSignInVisible] = useState(false);
   const container = useRef(null);
@@ -34,6 +38,7 @@ const Chat = () => {
 
     try {
       const newMessage = {
+        id: uuidv4(),
         user,
         message,
         createDate: new Date().toString(),
@@ -83,8 +88,10 @@ const Chat = () => {
 
   useEffect(() => {
     _checkWindowSizeAndSetContainer();
+     _setMessages(messages);
+     _scrollToBottom();
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [messages])
 
   useEffect(() => {
     if(!user){
@@ -92,22 +99,27 @@ const Chat = () => {
     }
   }, [user]);
 
+
+  //Listen for new messages from other clients
+  const { on, off, get } = useLocalStorage("local");
   useEffect(() => {
-    window.addEventListener("localstorage", e => {
-      if(e.detail.key === MESSAGES) {
-        console.log("store listen", e.detail);
-        // const messagesFromClients = JSON.parse(e.detail.newValue);
-        // dispatch(setMessagesFromClients(messagesFromClients));
+    const callBack = (key) => {
+      console.log("storage listen callback", key);
+      
+      if(key === MESSAGES){
+        const messagesFromStorage = JSON.parse(get(MESSAGES));
+        const lastItem = messagesFromStorage[messagesFromStorage.length - 1];
+        _setMessages((prevState) => [...prevState, lastItem]);
+        _scrollToBottom();
       }
-    });
+    }
 
+    on("set", callBack);
 
-    // return () => {
-    //   // window.removeEventListener("localstorage", () => {});
-    // }
-  }, [])
+    return () => off("set", callBack);
+  } , [get, on, off]);
 
-
+  
   return (
     <div className="chat">
       <SigninModal 
@@ -123,9 +135,9 @@ const Chat = () => {
         }}
       >
         <ul className="simple-lister vertical">
-          {messages.map((i) => {
+          {_messages.map((i) => {
             return (
-              <li key={new Date().getTime}>
+              <li key={i.id}>
                 {" "}
                 <ChatBuble
                   message={i.message}

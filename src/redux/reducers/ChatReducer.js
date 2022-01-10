@@ -6,7 +6,6 @@ const sessionUser =  JSON.parse(window.sessionStorage.getItem(USER));
 const initialState = {
     user: sessionUser || null,
     messages: storedMessages || [],
-    messagesFromClients: [],
 }
 
 const chat = createSlice({
@@ -19,9 +18,6 @@ const chat = createSlice({
       ) => void (state.user = action.payload),
       setMessages: (state, action) => {
         state.messages = [...(state.messages || []), action.payload];
-      },
-      setMessagesFromClients: (state, action) => {
-        state.messagesFromClients = [...(state.messagesFromClients || []), action.payload];
       }
 
     }
@@ -31,7 +27,6 @@ const chat = createSlice({
 export const {
     setUser,
     setMessages,
-    setMessagesFromClients
 } = chat.actions;
 
 export default chat.reducer;

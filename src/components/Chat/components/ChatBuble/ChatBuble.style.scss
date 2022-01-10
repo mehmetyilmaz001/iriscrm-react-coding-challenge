@@ -1,0 +1,41 @@
+.chat-bubble {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+
+  &.owner {
+    // justify-content: flex-end;
+    flex-direction: row-reverse;
+
+    .content {
+      .message-paper {
+        background-color: #f5f5f5;
+        color: #4c4c4c;
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    .name{
+        font-size: 11px;
+        color: #4c4c4c;
+    }
+    .message-paper {
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      gap: 3px;
+      background-color: #1976d2;
+      color: white;
+
+      .date {
+        font-size: 11px;
+      }
+    }
+  }
+}

@@ -7,7 +7,7 @@ function ChatBuble({message, user, createDate, isOwner}) {
     
     return ( 
         <>
-            <div className={`chat-bubble ${isOwner && 'owner'} `}>
+            <div className={`chat-bubble ${isOwner && 'owner'} `} data-testid="chat-buble">
                 <Avatar />
                 <div className="content">
                     <span className="name">{user}</span>

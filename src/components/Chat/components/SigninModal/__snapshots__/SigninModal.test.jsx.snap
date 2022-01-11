@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SiginModal component expect to render component 1`] = `
+<SigninModal>
+  <ForwardRef(Modal)
+    disableEscapeKeyDown={true}
+  >
+    <ForwardRef(ModalUnstyled)
+      BackdropComponent={
+        Object {
+          "$$typeof": Symbol(react.forward_ref),
+          "__emotion_base": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "propTypes": Object {
+              "children": [Function],
+              "className": [Function],
+              "classes": [Function],
+              "components": [Function],
+              "componentsProps": [Function],
+              "invisible": [Function],
+              "open": [Function],
+              "sx": [Function],
+              "transitionDuration": [Function],
+            },
+            "render": [Function],
+          },
+          "__emotion_forwardProp": [Function],
+          "__emotion_real": [Circular],
+          "__emotion_styles": Array [
+            "label:MuiModal-backdrop;",
+            Object {
+              "zIndex": -1,
+            },
+            [Function],
+            [Function],
+          ],
+          "defaultProps": undefined,
+          "render": [Function],
+          "withComponent": [Function],
+        }
+      }
+      closeAfterTransition={false}
+      components={
+        Object {
+          "Root": Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "__emotion_base": "div",
+            "__emotion_forwardProp": [Function],
+            "__emotion_real": [Circular],
+            "__emotion_styles": Array [
+              "label:MuiModal-root;",
+              [Function],
+              [Function],
+              [Function],
+              [Function],
+            ],
+            "defaultProps": undefined,
+            "render": [Function],
+            "withComponent": [Function],
+          },
+        }
+      }
+      componentsProps={
+        Object {
+          "root": Object {
+            "ownerState": Object {},
+          },
+        }
+      }
+      disableAutoFocus={false}
+      disableEnforceFocus={false}
+      disableEscapeKeyDown={true}
+      disablePortal={false}
+      disableRestoreFocus={false}
+      disableScrollLock={false}
+      hideBackdrop={false}
+      keepMounted={false}
+      onTransitionEnter={[Function]}
+      onTransitionExited={[Function]}
+    />
+  </ForwardRef(Modal)>
+</SigninModal>
+`;

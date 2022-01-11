@@ -1,16 +1,41 @@
-.chat{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+.chat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 
-    .simple-lister{
-        list-style: none;
-        margin: 0;
-        padding: 20px;
+ 
 
-        li {
-            margin-bottom: 30px;
-        }
+  .conversation {
+    position: relative;
+    width: 100%;
+    // height: 100%;
+
+    .btn-go-bottom,
+    .btn-load-more {
+      position: absolute;
+      width: 150px;
+      left: 0;
+      right: 0;
+      margin: auto;
     }
+
+    .btn-load-more {
+      top: 10px;
+    }
+
+    .btn-go-bottom {
+      bottom: 10px;
+    }
+
+    .simple-lister {
+      list-style: none;
+      margin: 0;
+      padding: 20px;
+
+      li {
+        margin-bottom: 30px;
+      }
+    }
+  }
 }

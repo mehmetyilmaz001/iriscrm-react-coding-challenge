@@ -4,7 +4,7 @@ import "./Chat.style.scss";
 import ChatAppBar from "./components/ChatAppBar/ChatAppBar";
 import NewMessage from "./components/NewMessage/NewMessage";
 import ChatBuble from "./components/ChatBuble/ChatBuble";
-import SigninModal from "./components/SigninModal";
+import SigninModal from "./components/SigninModal/SigninModal";
 import { v4 as uuidv4 } from "uuid";
 
 import { setUser, setMessages, insertMessage, 
@@ -25,7 +25,7 @@ const Chat = () => {
 
   const container = useRef(null);
 
-  const _scrollToBottom = () => {
+  const _scrollToBottom = useCallback( () => {
     setTimeout(() => {
       if (container.current) {
         // container.current.scrollTop = container.current.scrollHeight;
@@ -35,10 +35,10 @@ const Chat = () => {
           behavior: 'smooth'
         });
       }
-    }, 100);
-  };
+    }, 1);
+  }, []);
 
-  const _sendMessage = async (message) => {
+  const _sendMessage = useCallback( async (message) => {
     if (!message) {
       return;
     }
@@ -56,7 +56,7 @@ const Chat = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  },[dispatch, user]);
 
   const _checkWindowSizeAndSetContainer = useCallback(() => {
     const windowWidth = document.getElementById("root").offsetHeight;
@@ -92,22 +92,27 @@ const Chat = () => {
   };
 
 
-  const _onStorageUpdate = (e) => {
+  const _onStorageUpdate = useCallback( (e) => {
     const { key, newValue } = e;
     if (key === MESSAGES) {
       const messagesFromStorage = JSON.parse(newValue);
       const lastItem = messagesFromStorage[messagesFromStorage.length - 1];
       dispatch(setMessages([...messages, lastItem]));
-      dispatch(getMessagesWithPagination());
-      _scrollToBottom();
+      dispatch(getMessagesWithPagination(true));
+      // _scrollToBottom();
     }
-  };
+  }, [dispatch, messages]);
 
   const {scrollPosition, scrollHeight} = useScrollPosition(container.current);
 
   useEffect(() => {
         setIsScrollAtTheStop(scrollPosition === 0);
-  }, [scrollPosition, scrollHeight]);
+        // console.log(scrollPosition, scrollHeight);
+        if(scrollPosition >= scrollHeight) {
+          dispatch(goToLastPage())
+        }
+      
+  }, [scrollPosition, scrollHeight, dispatch]);
 
   // Load messages from storage for component mount
   useEffect(() => {
@@ -122,17 +127,11 @@ const Chat = () => {
 
   // Scroll to bottom when new message added
   useEffect(() => {
-
-    // console.log("isScrollAtTheStop => ", isScrollAtTheStop);
-    // console.log("total, page size => ", total, PAGE_SIZE );
     
     if(isScrollAtTheStop === false || total < PAGE_SIZE) {      
       _scrollToBottom();
-      
     }
     _checkWindowSizeAndSetContainer();
-    
-    
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages]);
 

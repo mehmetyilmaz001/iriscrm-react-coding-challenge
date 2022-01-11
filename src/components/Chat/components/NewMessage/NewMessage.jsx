@@ -1,4 +1,4 @@
-
+import React from 'react';
 import PropTypes from 'prop-types';
 import { InputBase, IconButton, Paper } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
@@ -42,7 +42,7 @@ function NewMessage(props) {
   );
 }
 
-export default NewMessage;
+export default React.memo(NewMessage);
 
 
 NewMessage.prototype = {

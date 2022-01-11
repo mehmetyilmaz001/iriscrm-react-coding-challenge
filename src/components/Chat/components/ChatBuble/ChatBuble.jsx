@@ -1,3 +1,4 @@
+import React from 'react';
 import { Avatar, Paper } from '@mui/material';
 import { PropTypes } from 'prop-types';
 import './ChatBuble.style.scss';
@@ -21,7 +22,7 @@ function ChatBuble({message, user, createDate, isOwner}) {
      );
 }
 
-export default ChatBuble;
+export default React.memo(ChatBuble);
 
 ChatBuble.prototype = {
     name: PropTypes.string,

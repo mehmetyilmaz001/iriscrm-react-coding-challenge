@@ -7,7 +7,7 @@ const initialState = {
   user: sessionUser || null,
   messages: [],
   pageSize: PAGE_SIZE,
-  currentPage: -1,
+  currentPage: 1,
   total: 0,
 };
 
@@ -70,7 +70,7 @@ export const insertMessage = (message) => (dispatch, getState) => {
 };
 
 export const getMessagesWithPagination = (isInitialLoad) => (dispatch, getState) => {
-  let { pageSize, currentPage } = getState().chat;
+  let { pageSize, currentPage, total } = getState().chat;
   const storedMessagesAsString = window.localStorage.getItem(MESSAGES);
   
 
@@ -90,10 +90,10 @@ export const getMessagesWithPagination = (isInitialLoad) => (dispatch, getState)
     let end = start + pageSize;
 
     // Show at least 25 items for in case of last page or first page
-    if(currentPage === lastPage){
-      start = storedMessages.length - (pageSize - 1);
+    if(currentPage === lastPage && total > PAGE_SIZE){
+      start = storedMessages.length - pageSize;
       end = storedMessages.length;
-    }else if(currentPage === 0){
+    }else if(currentPage === 1){
       start = 0;
       end = pageSize;
     }

@@ -1,4 +1,4 @@
-
+import React from 'react';
 import ProptyTypes from 'prop-types';
 import { Modal, Box, Typography, Paper, TextField, Button } from '@mui/material';
 
@@ -13,10 +13,11 @@ const style = {
     // border: '2px solid #000',
     boxShadow: 24,
     p: 4,
-    padding: 20
-  };
+    padding: 20,
+    };
 
 function SigninModal({open, onSubmit}) {
+  
   return (
     <Modal
       open={open}
@@ -24,7 +25,7 @@ function SigninModal({open, onSubmit}) {
       disableEscapeKeyDown={true}
     >
       <Box style={style}>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
+        <Typography id="modal-modal-title" variant="h6" component="h2" style={{marginBottom: 10}}>
           Please sign in to continue
         </Typography>
 
@@ -46,7 +47,7 @@ function SigninModal({open, onSubmit}) {
 }
 
 
-export default SigninModal;
+export default React.memo(SigninModal);
 
 SigninModal.prototype = {
     open: ProptyTypes.bool,

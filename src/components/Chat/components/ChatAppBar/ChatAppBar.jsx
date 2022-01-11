@@ -1,6 +1,8 @@
+import React from 'react';
 import { AppBar, Toolbar, Typography, Avatar } from '@mui/material';
 
 import PropTypes from 'prop-types';
+
 
 function ChatAppBar({user}) {
     
@@ -21,7 +23,7 @@ function ChatAppBar({user}) {
      );
 }
 
-export default ChatAppBar;
+export default React.memo(ChatAppBar);
 
 ChatAppBar.propTypes = { 
   user: PropTypes.string,

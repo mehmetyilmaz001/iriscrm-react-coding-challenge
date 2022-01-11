@@ -8,7 +8,7 @@ const useScrollPosition = (element) => {
     useEffect(() => {
       const updatePosition = () => {
         setScrollPosition(element.scrollTop);
-        setScrollHeight(element.scrollHeight);
+        setScrollHeight(element.offsetHeight);
 
         // setScrollPosition(window.pageYOffset);
       }

@@ -5,23 +5,18 @@ import ChatAppBar from "./components/ChatAppBar";
 import NewMessage from "./components/NewMessage";
 import ChatBuble from "./components/ChatBuble/ChatBuble";
 import SigninModal from "./components/SigninModal";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
-
-import { setUser, setMessages } from '../../redux/reducers/ChatReducer';
-import {MESSAGES } from '../../Constants';
-import useLocalStorage from "../../hooks/useStorage";
+import { setUser, setMessages } from "../../redux/reducers/ChatReducer";
+import { MESSAGES } from "../../Constants";
 
 const Chat = () => {
   const dispatch = useDispatch();
-  const { user, messages } = useSelector(s => s.chat)
+  const { user, messages } = useSelector((s) => s.chat);
 
-  const [ _messages, _setMessages ] = useState(messages);
   const [containerHasOverflow, setContainerHasOverflow] = useState(false);
   const [signInVisible, setSignInVisible] = useState(false);
   const container = useRef(null);
-
- 
 
   const _scrollToBottom = () => {
     setTimeout(() => {
@@ -44,15 +39,15 @@ const Chat = () => {
         createDate: new Date().toString(),
       };
 
-      dispatch(setMessages(newMessage))
-      _checkWindowSizeAndSetContainer();
-      _scrollToBottom();
+      dispatch(setMessages(newMessage));
+      // _checkWindowSizeAndSetContainer();
+      // _scrollToBottom();
     } catch (err) {
       console.error(err);
     }
   };
 
-  const _checkWindowSizeAndSetContainer = useCallback( () => {
+  const _checkWindowSizeAndSetContainer = useCallback(() => {
     const windowWidth = document.getElementById("root").offsetHeight;
     const headerAndFooterHeight =
       document.querySelector(".chat-header").offsetHeight +
@@ -73,58 +68,55 @@ const Chat = () => {
 
   const _openSignInModal = () => {
     setSignInVisible(true);
-  }
+  };
 
   const _closeSignInModal = () => {
     setSignInVisible(false);
-  }
+  };
 
   const _onSignIn = (userName) => {
-    if(userName){
+    if (userName) {
       dispatch(setUser(userName));
       _closeSignInModal();
     }
-  }
+  };
 
   useEffect(() => {
     _checkWindowSizeAndSetContainer();
-     _setMessages(messages);
-     _scrollToBottom();
+    _scrollToBottom();
     //eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages])
+  }, [messages]);
 
   useEffect(() => {
-    if(!user){
+    if (!user) {
       _openSignInModal();
     }
   }, [user]);
 
 
-  //Listen for new messages from other clients
-  const { on, off, get } = useLocalStorage("local");
+
   useEffect(() => {
-    const callBack = (key) => {
-      console.log("storage listen callback", key);
-      
-      if(key === MESSAGES){
-        const messagesFromStorage = JSON.parse(get(MESSAGES));
-        const lastItem = messagesFromStorage[messagesFromStorage.length - 1];
-        _setMessages((prevState) => [...prevState, lastItem]);
-        _scrollToBottom();
-      }
+    window.addEventListener("storage", onStorageUpdate);
+    return () => {
+      window.removeEventListener("storage", onStorageUpdate);
+    };
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onStorageUpdate = (e) => {
+    const { key, newValue } = e;
+    if (key === MESSAGES) {
+      const messagesFromStorage = JSON.parse(newValue);
+      const lastItem = messagesFromStorage[messagesFromStorage.length - 1];
+      // _setMessages((prevState) => [...prevState, lastItem]);
+      dispatch(setMessages(lastItem));
+      _scrollToBottom();
     }
+  };
 
-    on("set", callBack);
-
-    return () => off("set", callBack);
-  } , [get, on, off]);
-
-  
   return (
     <div className="chat">
-      <SigninModal 
-        open={signInVisible} 
-        onSubmit={(name) => _onSignIn(name)} />
+      <SigninModal open={signInVisible} onSubmit={(name) => _onSignIn(name)} />
       <ChatAppBar user={user} />
       <div
         ref={container}
@@ -135,7 +127,7 @@ const Chat = () => {
         }}
       >
         <ul className="simple-lister vertical">
-          {_messages.map((i) => {
+          {messages.map((i) => {
             return (
               <li key={i.id}>
                 {" "}

@@ -10,12 +10,12 @@ function ChatBuble({message, user, createDate, isOwner}) {
             <div className={`chat-bubble ${isOwner && 'owner'} `}>
                 <Avatar />
                 <div className="content">
-                <span className="name">{user}</span>
-                    <Paper className='message-paper'>
-                        <span className='message'>{message}</span>
-                        <span className='date'>{formattedDate}</span>
-                    </Paper>
-                </div>
+                    <span className="name">{user}</span>
+                        <Paper className='message-paper'>
+                            <span className='message'>{message}</span>
+                            <span className='date'>{formattedDate}</span>
+                        </Paper>
+                    </div>
             </div>
         </>
      );

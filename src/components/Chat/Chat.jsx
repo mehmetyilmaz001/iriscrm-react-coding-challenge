@@ -93,15 +93,15 @@ const Chat = () => {
 
 
   const _onStorageUpdate = useCallback( (e) => {
-    const { key, newValue } = e;
+    const { key } = e;
     if (key === MESSAGES) {
-      const messagesFromStorage = JSON.parse(newValue);
-      const lastItem = messagesFromStorage[messagesFromStorage.length - 1];
-      dispatch(setMessages([...messages, lastItem]));
+      // const messagesFromStorage = JSON.parse(newValue);
+      // const lastItem = messagesFromStorage[messagesFromStorage.length - 1];
+      // dispatch(setMessages([...messages, lastItem]));
       dispatch(getMessagesWithPagination(true));
       // _scrollToBottom();
     }
-  }, [dispatch, messages]);
+  }, [dispatch]);
 
   const {scrollPosition, scrollHeight} = useScrollPosition(container.current);
 
